@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Askly Kiosk Showcase | Next-Gen Audience Engagement</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    :root {
+      --bg: #05070e;
+      --card-bg: rgba(10, 15, 29, 0.85);
+      --teal: #10b981;
+      --cyan: #06b6d4;
+      --amber: #f59e0b;
+      --purple: #a855f7;
+    }
+    body {
+      background-color: var(--bg);
+      color: #fff;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      overflow: hidden;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+    }
+
+    /* Ambient dynamic glow */
+    .ambient-glow {
+      position: absolute;
+      width: 60vw;
+      height: 60vw;
+      border-radius: 50%;
+      filter: blur(140px);
+      pointer-events: none;
+      z-index: 1;
+      transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+      opacity: 0.22;
+    }
+    .glow-1 { top: -20%; left: -10%; background: var(--teal); }
+    .glow-2 { bottom: -20%; right: -10%; background: var(--cyan); }
+    .grid-pattern {
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0.6;
+    }
+
+    /* Floating particles */
+    .particle-container {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 30;
+    }
+    .floating-emoji {
+      position: absolute;
+      font-size: 2.2rem;
+      animation: floatUp 2.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes floatUp {
+      0% { transform: translateY(0) scale(0.6); opacity: 0; }
+      15% { opacity: 1; transform: translateY(-30px) scale(1.1); }
+      80% { opacity: 0.9; }
+      100% { transform: translateY(-320px) scale(0.9); opacity: 0; }
+    }
+
+    /* Header */
+    header {
+      position: relative;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.5rem 3rem 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      background: rgba(5, 7, 14, 0.4);
+      backdrop-filter: blur(12px);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .logo-badge {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #10b981, #06b6d4);
+      padding: 2px;
+      box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
+    }
+    .logo-inner {
+      width: 100%;
+      height: 100%;
+      background: #070b14;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 1.4rem;
+      color: #34d399;
+    }
+    .brand-title {
+      font-size: 1.6rem;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      background: linear-gradient(to right, #fff, #cbd5e1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .kiosk-badge {
+      font-size: 0.65rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 999px;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: #34d399;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      -webkit-text-fill-color: #34d399;
+    }
+    .brand-subtitle {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+
+    .pin-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 0.5rem 1.2rem;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+    }
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 10px #10b981;
+      animation: pulse 1.6s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.4); opacity: 0.6; }
+    }
+    .pin-label {
+      font-size: 0.7rem;
+      color: #94a3b8;
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+    .pin-code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: #34d399;
+      letter-spacing: 0.15em;
+    }
+
+    .btn-fs {
+      padding: 0.6rem 1.2rem;
+      border-radius: 12px;
+      background: rgba(16, 185, 129, 0.18);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #34d399;
+      font-weight: 700;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s;
+    }
+    .btn-fs:hover {
+      background: rgba(16, 185, 129, 0.3);
+      transform: scale(1.04);
+    }
+    .btn-icon {
+      padding: 0.6rem;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #cbd5e1;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-icon:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    /* Main Content Stage */
+    main {
+      position: relative;
+      z-index: 10;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem 3.5rem;
+    }
+    .stage-container {
+      width: 100%;
+      max-width: 1280px;
+      height: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      align-items: center;
+      gap: 3.5rem;
+    }
+
+    .left-col {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+    .act-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #cbd5e1;
+      width: fit-content;
+    }
+    .headline {
+      font-size: 3.6rem;
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+      transition: all 0.5s ease;
+    }
+    .subhead {
+      font-size: 1.2rem;
+      color: #cbd5e1;
+      font-weight: 400;
+      line-height: 1.45;
+      max-width: 480px;
+    }
+
+    /* Reactions Bar */
+    .reaction-bar {
+      margin-top: 0.5rem;
+    }
+    .reaction-title {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #94a3b8;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .reaction-btn-group {
+      display: flex;
+      gap: 0.6rem;
+    }
+    .btn-react {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .btn-react:hover {
+      transform: scale(1.22);
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(16, 185, 129, 0.5);
+    }
+    .btn-react:active {
+      transform: scale(0.9);
+    }
+
+    /* Right Mockup Display */
+    .mockup-frame {
+      width: 100%;
+      aspect-ratio: 16 / 11;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.03));
+      padding: 1.5px;
+      border-radius: 28px;
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8);
+      position: relative;
+    }
+    .mockup-inner {
+      width: 100%;
+      height: 100%;
+      background: var(--card-bg);
+      backdrop-filter: blur(24px);
+      border-radius: 26.5px;
+      padding: 1.8rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .scene-view {
+      display: none;
+      height: 100%;
+      flex-direction: column;
+      justify-content: space-between;
+      animation: fadeIn 0.4s ease forwards;
+    }
+    .scene-view.active {
+      display: flex;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Footer / Navigation */
+    footer {
+      position: relative;
+      z-index: 20;
+      padding: 1.2rem 3rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      background: rgba(5, 7, 14, 0.5);
+      backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-tabs {
+      display: flex;
+      gap: 0.6rem;
+    }
+    .nav-tab {
+      padding: 0.6rem 1.1rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #94a3b8;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .nav-tab.active {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+    .tab-progress {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #10b981, #06b6d4);
+      width: 0%;
+      transition: width 0.05s linear;
+    }
+    .hint-keys {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      font-size: 0.75rem;
+      color: #64748b;
+    }
+    kbd {
+      background: rgba(255, 255, 255, 0.1);
+      color: #cbd5e1;
+      padding: 0.2rem 0.4rem;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="ambient-glow glow-1" id="glow1"></div>
+  <div class="ambient-glow glow-2" id="glow2"></div>
+  <div class="grid-pattern"></div>
+  <div class="particle-container" id="particleBox"></div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="brand">
+      <div class="logo-badge">
+        <div class="logo-inner">A</div>
+      </div>
+      <div>
+        <div class="brand-title">
+          Askly
+          <span class="kiosk-badge">KIOSK MODE</span>
+        </div>
+        <div class="brand-subtitle">Real-Time Multi-Mode Interactive Presentation System</div>
+      </div>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 1.5rem;">
+      <div class="pin-badge">
+        <div class="pulse-dot"></div>
+        <span class="pin-label">Room PIN</span>
+        <span class="pin-code" id="kioskPin">ASK-892</span>
+      </div>
+
+      <div style="display: flex; gap: 0.5rem;">
+        <button class="btn-icon" id="btnPause" title="Pause / Play (Space)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path id="pausePath" d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+          </svg>
+        </button>
+        <button class="btn-fs" id="btnFullscreen">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+          </svg>
+          <span id="fsText">FULLSCREEN</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN STAGE -->
+  <main>
+    <div class="stage-container">
+      
+      <!-- LEFT -->
+      <div class="left-col">
+        <div class="act-tag" id="actBadge">
+          <span style="width: 7px; height: 7px; border-radius: 50%; background: #10b981;"></span>
+          <span id="actTagText">LIVE PLATFORM OVERVIEW</span>
+        </div>
+
+        <h1 class="headline" id="mainHeadline" style="background: linear-gradient(to right, #34d399, #22d3ee); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+          AUDIENCE SUPERPOWERS
+        </h1>
+
+        <p class="subhead" id="mainSubhead">
+          Zero Downloads. Instant QR Join. High-speed interactive polling, live Q&A, and gamified quiz battles.
+        </p>
+
+        <!-- Tap to react -->
+        <div class="reaction-bar">
+          <div class="reaction-title">
+            <span>Passerby: Tap to launch live reaction</span>
+            <span id="reactionCountBadge" style="background: rgba(255,255,255,0.1); padding: 0.1rem 0.4rem; border-radius: 4px; font-size: 0.65rem;">0 sent</span>
+          </div>
+          <div class="reaction-btn-group">
+            <button class="btn-react" onclick="fireReaction('🔥')">🔥</button>
+            <button class="btn-react" onclick="fireReaction('👏')">👏</button>
+            <button class="btn-react" onclick="fireReaction('💡')">💡</button>
+            <button class="btn-react" onclick="fireReaction('❤️')">❤️</button>
+            <button class="btn-react" onclick="fireReaction('🚀')">🚀</button>
+            <button class="btn-react" onclick="fireReaction('💯')">💯</button>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-top: 0.5rem;">
+          <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); padding: 0.8rem; border-radius: 14px;">
+            <div style="font-weight: 700; font-size: 0.8rem; color: #f1f5f9;">Instant Sync</div>
+            <div style="font-size: 0.7rem; color: #94a3b8; margin-top: 0.2rem;">&lt; 30ms latency over Socket.io</div>
+          </div>
+          <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); padding: 0.8rem; border-radius: 14px;">
+            <div style="font-weight: 700; font-size: 0.8rem; color: #f1f5f9;">Campus Ready</div>
+            <div style="font-size: 0.7rem; color: #94a3b8; margin-top: 0.2rem;">Tested for 300+ sockets per Wi-Fi IP</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT MOCKUP STAGE -->
+      <div class="mockup-frame">
+        <div class="mockup-inner">
+          
+          <!-- Scene 0: Overview -->
+          <div class="scene-view active" id="scene0">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.8rem;">
+              <div style="display: flex; gap: 0.4rem; align-items: center;">
+                <span style="width: 10px; height: 10px; border-radius: 50%; background: #f43f5e;"></span>
+                <span style="width: 10px; height: 10px; border-radius: 50%; background: #f59e0b;"></span>
+                <span style="width: 10px; height: 10px; border-radius: 50%; background: #10b981;"></span>
+                <span style="font-family: monospace; font-size: 0.75rem; color: #94a3b8; margin-left: 0.5rem;">askly.live/ASK-892</span>
+              </div>
+              <span style="font-size: 0.7rem; padding: 0.2rem 0.6rem; border-radius: 999px; background: rgba(16, 185, 129, 0.2); color: #34d399; font-weight: 700;">
+                248 Connected Live
+              </span>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.8rem; margin: auto 0;">
+              <div style="background: rgba(6, 182, 212, 0.08); border: 1px solid rgba(6, 182, 212, 0.25); border-radius: 16px; padding: 1.2rem; text-align: center;">
+                <div style="font-size: 2rem; margin-bottom: 0.4rem;">💬</div>
+                <div style="font-weight: 800; font-size: 0.9rem; color: #67e8f9;">Live Q&A</div>
+                <div style="font-size: 0.7rem; color: #94a3b8; margin-top: 0.3rem;">Upvote & filter questions in real time</div>
+              </div>
+              <div style="background: rgba(245, 158, 11, 0.08); border: 1px solid rgba(245, 158, 11, 0.25); border-radius: 16px; padding: 1.2rem; text-align: center;">
+                <div style="font-size: 2rem; margin-bottom: 0.4rem;">🏆</div>
+                <div style="font-weight: 800; font-size: 0.9rem; color: #fcd34d;">Quiz Arena</div>
+                <div style="font-size: 0.7rem; color: #94a3b8; margin-top: 0.3rem;">Kahoot-style instant speed scoring</div>
+              </div>
+              <div style="background: rgba(168, 85, 247, 0.08); border: 1px solid rgba(168, 85, 247, 0.25); border-radius: 16px; padding: 1.2rem; text-align: center;">
+                <div style="font-size: 2rem; margin-bottom: 0.4rem;">📚</div>
+                <div style="font-weight: 800; font-size: 0.9rem; color: #d8b4fe;">Mentor Hub</div>
+                <div style="font-size: 0.7rem; color: #94a3b8; margin-top: 0.3rem;">Persistent course chapters & history</div>
+              </div>
+            </div>
+
+            <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 0.8rem 1rem; display: flex; align-items: center; justify-content: space-between;">
+              <div style="display: flex; align-items: center; gap: 0.8rem;">
+                <div style="width: 34px; height: 34px; border-radius: 10px; background: rgba(16, 185, 129, 0.2); display: flex; align-items: center; justify-content: center; color: #34d399; font-weight: 800;">⚡</div>
+                <div>
+                  <div style="font-size: 0.8rem; font-weight: 700;">Instant Participant Join</div>
+                  <div style="font-size: 0.65rem; color: #94a3b8;">Type PIN on laptop or scan QR from your phone</div>
+                </div>
+              </div>
+              <button onclick="goToScene(4)" style="padding: 0.4rem 0.9rem; border-radius: 10px; background: #10b981; color: #042f2e; font-weight: 800; font-size: 0.75rem; border: none; cursor: pointer;">
+                Scan QR
+              </button>
+            </div>
+          </div>
+
+          <!-- Scene 1: Q&A -->
+          <div class="scene-view" id="scene1">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.8rem;">
+              <div>
+                <div style="font-size: 0.75rem; font-weight: 800; color: #22d3ee; text-transform: uppercase;">Active Question Stream</div>
+                <div style="font-size: 0.68rem; color: #94a3b8;">Sorted automatically by live crowd consensus</div>
+              </div>
+              <div style="font-size: 0.7rem; color: #34d399; font-weight: 700; display: flex; align-items: center; gap: 0.4rem;">
+                <span style="width: 6px; height: 6px; border-radius: 50%; background: #34d399;"></span>
+                Live Socket Sync
+              </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 0.8rem; margin: auto 0;">
+              <!-- Question 1 -->
+              <div style="background: linear-gradient(90deg, rgba(6, 182, 212, 0.12), rgba(255,255,255,0.03)); border: 1px solid rgba(6, 182, 212, 0.4); border-radius: 16px; padding: 1.1rem; display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
+                <div>
+                  <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem;">
+                    <span style="font-weight: 700; font-size: 0.8rem; color: #67e8f9;">Elena R.</span>
+                    <span style="font-size: 0.65rem; padding: 0.15rem 0.4rem; border-radius: 999px; background: rgba(6, 182, 212, 0.2); color: #67e8f9; font-family: monospace;">TOP PINNED</span>
+                  </div>
+                  <div style="font-size: 0.9rem; font-weight: 600; color: #f8fafc; line-height: 1.35;">
+                    How does Askly handle 1,000+ simultaneous participants on congested campus Wi-Fi?
+                  </div>
+                </div>
+                <button id="upvoteBtn" onclick="toggleUpvote()" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0.6rem 0.9rem; border-radius: 12px; border: 1px solid rgba(6, 182, 212, 0.4); background: rgba(6, 182, 212, 0.15); color: #22d3ee; cursor: pointer; transition: all 0.2s;">
+                  <span style="font-size: 0.9rem;">▲</span>
+                  <span id="upvoteCounter" style="font-family: monospace; font-weight: 800; font-size: 0.8rem;">148</span>
+                </button>
+              </div>
+
+              <!-- Question 2 -->
+              <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 0.9rem; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <div style="font-size: 0.72rem; color: #94a3b8; margin-bottom: 0.2rem;">Marcus T.</div>
+                  <div style="font-size: 0.8rem; color: #e2e8f0;">Can mentors export quiz & polling analytics into Canvas or CSV?</div>
+                </div>
+                <div style="padding: 0.3rem 0.6rem; border-radius: 8px; background: rgba(255,255,255,0.05); font-family: monospace; font-size: 0.75rem; color: #cbd5e1;">▲ 94</div>
+              </div>
+            </div>
+
+            <div style="font-size: 0.7rem; color: #94a3b8; display: flex; justify-content: space-between; background: rgba(255,255,255,0.02); padding: 0.6rem 0.8rem; border-radius: 10px;">
+              <span>Anti-spam: 5 questions/min token bucket</span>
+              <span style="color: #22d3ee; font-weight: 700; cursor: pointer;" onclick="toggleUpvote()">Tap ▲ to test live upvote</span>
+            </div>
+          </div>
+
+          <!-- Scene 2: Quiz Arena -->
+          <div class="scene-view" id="scene2">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.8rem;">
+              <div style="display: flex; align-items: center; gap: 0.6rem;">
+                <span style="background: #f59e0b; color: #000; font-weight: 900; font-size: 0.7rem; padding: 0.15rem 0.4rem; border-radius: 6px;">Q 3/5</span>
+                <span style="font-size: 0.8rem; font-weight: 600; color: #f1f5f9;">Live Arena Challenge</span>
+              </div>
+              <div style="width: 32px; height: 32px; border-radius: 50%; border: 2px solid #f59e0b; display: flex; align-items: center; justify-content: center; font-family: monospace; font-weight: 800; font-size: 0.8rem; color: #fbbf24;" id="quizSecCount">
+                10
+              </div>
+            </div>
+
+            <div style="text-align: center; margin: 0.5rem 0;">
+              <div style="font-size: 1.05rem; font-weight: 800; color: #fff; line-height: 1.3;">
+                Which protocol allows full-duplex live updates without continuous polling?
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem;" id="quizOptionGroup">
+              <button class="quiz-btn" onclick="selectQuiz(this, false)" style="padding: 0.9rem; border-radius: 14px; background: rgba(244, 63, 94, 0.2); border: 1px solid rgba(244, 63, 94, 0.4); color: #fff; text-align: left; cursor: pointer; display: flex; align-items: center; gap: 0.6rem;">
+                <span style="background: rgba(0,0,0,0.3); padding: 0.4rem 0.6rem; border-radius: 8px; font-weight: 900;">▲</span>
+                <span style="font-size: 0.8rem; font-weight: 700;">HTTP Long Polling</span>
+              </button>
+              <button class="quiz-btn" onclick="selectQuiz(this, true)" style="padding: 0.9rem; border-radius: 14px; background: rgba(16, 185, 129, 0.2); border: 1px solid rgba(16, 185, 129, 0.4); color: #fff; text-align: left; cursor: pointer; display: flex; align-items: center; gap: 0.6rem;">
+                <span style="background: rgba(0,0,0,0.3); padding: 0.4rem 0.6rem; border-radius: 8px; font-weight: 900;">◆</span>
+                <span style="font-size: 0.8rem; font-weight: 700;">Socket.io / WebSockets</span>
+              </button>
+              <button class="quiz-btn" onclick="selectQuiz(this, false)" style="padding: 0.9rem; border-radius: 14px; background: rgba(245, 158, 11, 0.2); border: 1px solid rgba(245, 158, 11, 0.4); color: #fff; text-align: left; cursor: pointer; display: flex; align-items: center; gap: 0.6rem;">
+                <span style="background: rgba(0,0,0,0.3); padding: 0.4rem 0.6rem; border-radius: 8px; font-weight: 900;">●</span>
+                <span style="font-size: 0.8rem; font-weight: 700;">FTP Streaming</span>
+              </button>
+              <button class="quiz-btn" onclick="selectQuiz(this, false)" style="padding: 0.9rem; border-radius: 14px; background: rgba(6, 182, 212, 0.2); border: 1px solid rgba(6, 182, 212, 0.4); color: #fff; text-align: left; cursor: pointer; display: flex; align-items: center; gap: 0.6rem;">
+                <span style="background: rgba(0,0,0,0.3); padding: 0.4rem 0.6rem; border-radius: 8px; font-weight: 900;">■</span>
+                <span style="font-size: 0.8rem; font-weight: 700;">DNS Prefetching</span>
+              </button>
+            </div>
+
+            <div style="font-size: 0.72rem; text-align: center; color: #94a3b8;" id="quizStatusMsg">
+              Passerby: Tap an answer above to test live scoring!
+            </div>
+          </div>
+
+          <!-- Scene 3: Mentor Hub -->
+          <div class="scene-view" id="scene3">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.8rem;">
+              <div>
+                <div style="font-size: 0.75rem; font-weight: 800; color: #c084fc; text-transform: uppercase;">Course Chapters & Reusable Rooms</div>
+                <div style="font-size: 0.68rem; color: #94a3b8;">CS 301: Distributed Systems</div>
+              </div>
+              <span style="font-size: 0.7rem; padding: 0.2rem 0.6rem; border-radius: 999px; background: rgba(168, 85, 247, 0.2); color: #d8b4fe; font-weight: 700;">
+                Permanent Hub
+              </span>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 0.6rem; margin: auto 0;">
+              <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 0.9rem; display: flex; justify-content: space-between; align-items: center;">
+                <div style="display: flex; align-items: center; gap: 0.7rem;">
+                  <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(168, 85, 247, 0.2); color: #d8b4fe; font-weight: 800; display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">#14</div>
+                  <div>
+                    <div style="font-size: 0.8rem; font-weight: 700;">Session 14: Consensus Algorithms</div>
+                    <div style="font-size: 0.68rem; color: #94a3b8;">Oct 10 • 142 Attendees • 42 Questions</div>
+                  </div>
+                </div>
+                <div style="text-align: right;">
+                  <div style="font-size: 0.8rem; font-weight: 800; color: #34d399;">96% Engaged</div>
+                  <div style="font-size: 0.65rem; color: #94a3b8;">Full Report Saved</div>
+                </div>
+              </div>
+
+              <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 0.9rem; display: flex; justify-content: space-between; align-items: center;">
+                <div style="display: flex; align-items: center; gap: 0.7rem;">
+                  <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(16, 185, 129, 0.2); color: #34d399; font-weight: 800; display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">#15</div>
+                  <div>
+                    <div style="font-size: 0.8rem; font-weight: 700;">Session 15: Socket Performance</div>
+                    <div style="font-size: 0.68rem; color: #94a3b8;">Live Session Now Open</div>
+                  </div>
+                </div>
+                <span style="font-size: 0.7rem; font-weight: 800; color: #34d399; background: rgba(16, 185, 129, 0.15); padding: 0.2rem 0.6rem; border-radius: 999px;">
+                  IN PROGRESS
+                </span>
+              </div>
+            </div>
+
+            <div style="background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.25); border-radius: 12px; padding: 0.7rem 0.9rem; font-size: 0.72rem; color: #d8b4fe; display: flex; justify-content: space-between;">
+              <span>Closing & reopening rooms preserves every question and poll vote history</span>
+              <strong style="color: #fff;">Zero Data Loss</strong>
+            </div>
+          </div>
+
+          <!-- Scene 4: Join Live CTA -->
+          <div class="scene-view" id="scene4">
+            <div style="display: flex; height: 100%; align-items: center; justify-content: space-between; gap: 2rem;">
+              <div style="flex: 1; display: flex; flex-direction: column; gap: 1rem;">
+                <div>
+                  <div style="font-size: 0.75rem; font-weight: 800; color: #34d399; text-transform: uppercase;">Step 1: Point Phone Camera</div>
+                  <h3 style="font-size: 1.6rem; font-weight: 900; color: #fff; margin-top: 0.2rem; line-height: 1.15;">
+                    Join Live Directly From Your Mobile
+                  </h3>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.8rem; color: #cbd5e1;">
+                  <div style="display: flex; align-items: center; gap: 0.6rem;">
+                    <span style="width: 20px; height: 20px; border-radius: 50%; background: rgba(16,185,129,0.2); color: #34d399; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.7rem;">1</span>
+                    <span>Scan the QR code with any phone camera</span>
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 0.6rem;">
+                    <span style="width: 20px; height: 20px; border-radius: 50%; background: rgba(16,185,129,0.2); color: #34d399; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.7rem;">2</span>
+                    <span>Enter your nickname (No app install needed)</span>
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 0.6rem;">
+                    <span style="width: 20px; height: 20px; border-radius: 50%; background: rgba(16,185,129,0.2); color: #34d399; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.7rem;">3</span>
+                    <span>Vote on questions and play live quizzes</span>
+                  </div>
+                </div>
+
+                <div style="font-size: 0.72rem; color: #94a3b8; background: rgba(255,255,255,0.04); padding: 0.5rem 0.8rem; border-radius: 10px; width: fit-content;">
+                  Works on iOS Safari, Android Chrome, and laptops
+                </div>
+              </div>
+
+              <!-- High Contrast SVG QR Code -->
+              <div style="display: flex; flex-direction: column; align-items: center; gap: 0.6rem;">
+                <div style="background: #fff; padding: 1.2rem; border-radius: 24px; box-shadow: 0 10px 40px rgba(16, 185, 129, 0.4); display: flex; align-items: center; justify-content: center;">
+                  <!-- High res SVG QR code matrix -->
+                  <svg width="170" height="170" viewBox="0 0 29 29" shape-rendering="crispEdges">
+                    <path fill="#000" d="M0,0 h7 v7 h-7 z M1,1 h5 v5 h-5 z M2,2 h3 v3 h-3 z M22,0 h7 v7 h-7 z M23,1 h5 v5 h-5 z M24,2 h3 v3 h-3 z M0,22 h7 v7 h-7 z M1,23 h5 v5 h-5 z M2,24 h3 v3 h-3 z M9,1 h1 v2 h-1 z M12,0 h1 v1 h-1 z M14,1 h2 v1 h-2 z M18,0 h1 v2 h-1 z M11,3 h2 v1 h-2 z M14,3 h1 v2 h-1 z M16,3 h3 v1 h-3 z M8,5 h2 v2 h-2 z M12,5 h1 v1 h-1 z M17,5 h2 v1 h-2 z M10,8 h1 v1 h-1 z M13,8 h2 v1 h-2 z M18,8 h1 v1 h-1 z M8,10 h1 v3 h-1 z M11,10 h2 v2 h-2 z M14,11 h1 v1 h-1 z M16,10 h1 v1 h-1 z M18,10 h3 v2 h-3 z M9,14 h1 v2 h-1 z M12,13 h2 v2 h-2 z M16,13 h1 v1 h-1 z M19,14 h1 v1 h-1 z M8,17 h2 v1 h-2 z M11,17 h1 v3 h-1 z M14,16 h3 v2 h-3 z M18,18 h2 v2 h-2 z M9,21 h2 v1 h-2 z M13,21 h1 v1 h-1 z M16,21 h2 v1 h-2 z M9,24 h1 v2 h-1 z M12,24 h2 v1 h-2 z M15,24 h1 v3 h-1 z M18,24 h1 v1 h-1 z M9,27 h3 v1 h-3 z M17,26 h2 v2 h-2 z M22,9 h2 v1 h-2 z M26,9 h1 v2 h-1 z M24,11 h1 v1 h-1 z M22,13 h3 v1 h-3 z M27,13 h1 v2 h-1 z M23,16 h2 v1 h-2 z M26,16 h2 v2 h-2 z M22,19 h1 v2 h-1 z M25,19 h2 v1 h-2 z M22,23 h2 v1 h-2 z M26,22 h2 v2 h-2 z M23,26 h3 v1 h-3 z M27,26 h1 v2 h-1 z"/>
+                  </svg>
+                </div>
+                <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 800; color: #34d399;">
+                  askly.live/play/ASK-892
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="nav-tabs" id="navTabs">
+      <button class="nav-tab active" onclick="goToScene(0)">
+        <span style="width: 6px; height: 6px; border-radius: 50%; background: #10b981;"></span>
+        Overview
+        <div class="tab-progress" id="progress0"></div>
+      </button>
+      <button class="nav-tab" onclick="goToScene(1)">
+        <span style="width: 6px; height: 6px; border-radius: 50%; background: #06b6d4;"></span>
+        Live Q&A
+        <div class="tab-progress" id="progress1"></div>
+      </button>
+      <button class="nav-tab" onclick="goToScene(2)">
+        <span style="width: 6px; height: 6px; border-radius: 50%; background: #f59e0b;"></span>
+        Quiz Arena
+        <div class="tab-progress" id="progress2"></div>
+      </button>
+      <button class="nav-tab" onclick="goToScene(3)">
+        <span style="width: 6px; height: 6px; border-radius: 50%; background: #a855f7;"></span>
+        Mentor Hub
+        <div class="tab-progress" id="progress3"></div>
+      </button>
+      <button class="nav-tab" onclick="goToScene(4)">
+        <span style="width: 6px; height: 6px; border-radius: 50%; background: #34d399;"></span>
+        Join Now
+        <div class="tab-progress" id="progress4"></div>
+      </button>
+    </div>
+
+    <div class="hint-keys">
+      <span><kbd>F</kbd> Fullscreen</span>
+      <span><kbd>Space</kbd> Pause/Play</span>
+      <span><kbd>← / →</kbd> Switch Acts</span>
+    </div>
+  </footer>
+
+  <script>
+    const SCENES = [
+      {
+        tag: 'LIVE PLATFORM OVERVIEW',
+        headline: 'AUDIENCE SUPERPOWERS',
+        subhead: 'Zero Downloads. Instant QR Join. High-speed interactive polling, live Q&A, and gamified quiz battles.',
+        gradient: 'linear-gradient(to right, #34d399, #22d3ee)',
+        color1: '#10b981',
+        color2: '#06b6d4'
+      },
+      {
+        tag: 'SPEAKER & AUDIENCE SYNC',
+        headline: 'SMART LIVE Q&A',
+        subhead: 'Crowdsourced questions. Real-time upvoting & spam protection. Presenters address what the room truly cares about.',
+        gradient: 'linear-gradient(to right, #22d3ee, #818cf8)',
+        color1: '#06b6d4',
+        color2: '#6366f1'
+      },
+      {
+        tag: 'INSTANT LIVE BATTLES',
+        headline: 'QUIZ ARENA',
+        subhead: 'Turn any lecture into high-stakes gamified competition. Flat-point scoring, speed bonuses, and podium celebrations.',
+        gradient: 'linear-gradient(to right, #fbbf24, #f97316)',
+        color1: '#f59e0b',
+        color2: '#ef4444'
+      },
+      {
+        tag: 'PERSISTENT CLASSROOMS',
+        headline: 'MENTOR CHAPTERS',
+        subhead: 'Organize permanent course rooms into chapters. Reopen sessions at any time with full participant analytics retained.',
+        gradient: 'linear-gradient(to right, #c084fc, #ec4899)',
+        color1: '#a855f7',
+        color2: '#ec4899'
+      },
+      {
+        tag: 'TRY THE LIVE DEMO',
+        headline: 'JOIN RIGHT NOW',
+        subhead: 'Point your phone camera at the screen or type the PIN to watch your device sync to the kiosk in milliseconds.',
+        gradient: 'linear-gradient(to right, #34d399, #a3e635)',
+        color1: '#10b981',
+        color2: '#84cc16'
+      }
+    ];
+
+    let currentIdx = 0;
+    let isPaused = false;
+    let progress = 0;
+    const ACT_MS = 9000;
+    const STEP_MS = 50;
+
+    const headlineEl = document.getElementById('mainHeadline');
+    const subheadEl = document.getElementById('mainSubhead');
+    const actTagTextEl = document.getElementById('actTagText');
+    const glow1 = document.getElementById('glow1');
+    const glow2 = document.getElementById('glow2');
+    const btnPause = document.getElementById('btnPause');
+    const pausePath = document.getElementById('pausePath');
+    const btnFullscreen = document.getElementById('btnFullscreen');
+    const fsText = document.getElementById('fsText');
+
+    let upvotes = 148;
+    let hasUpvoted = false;
+    let reactionCount = 0;
+
+    function goToScene(idx) {
+      currentIdx = idx;
+      progress = 0;
+      updateSceneUI();
+    }
+
+    function updateSceneUI() {
+      const s = SCENES[currentIdx];
+      headlineEl.textContent = s.headline;
+      headlineEl.style.background = s.gradient;
+      headlineEl.style.webkitBackgroundClip = 'text';
+      headlineEl.style.webkitTextFillColor = 'transparent';
+      subheadEl.textContent = s.subhead;
+      actTagTextEl.textContent = s.tag;
+
+      glow1.style.background = s.color1;
+      glow2.style.background = s.color2;
+
+      // Toggle active views
+      for (let i = 0; i < 5; i++) {
+        const view = document.getElementById('scene' + i);
+        if (view) view.classList.toggle('active', i === currentIdx);
+
+        const tab = document.querySelectorAll('.nav-tab')[i];
+        if (tab) tab.classList.toggle('active', i === currentIdx);
+
+        const pBar = document.getElementById('progress' + i);
+        if (pBar) pBar.style.width = i === currentIdx ? `${progress}%` : '0%';
+      }
+    }
+
+    // Auto loop timer
+    setInterval(() => {
+      if (isPaused) return;
+
+      progress += (STEP_MS / ACT_MS) * 100;
+      if (progress >= 100) {
+        currentIdx = (currentIdx + 1) % SCENES.length;
+        progress = 0;
+        updateSceneUI();
+      } else {
+        const pBar = document.getElementById('progress' + currentIdx);
+        if (pBar) pBar.style.width = `${progress}%`;
+      }
+    }, STEP_MS);
+
+    // Quiz timer simulation
+    let quizSec = 10;
+    setInterval(() => {
+      if (currentIdx === 2) {
+        quizSec = quizSec > 1 ? quizSec - 1 : 12;
+        const el = document.getElementById('quizSecCount');
+        if (el) el.textContent = quizSec;
+      }
+    }, 1000);
+
+    // Upvote test
+    function toggleUpvote() {
+      const counterEl = document.getElementById('upvoteCounter');
+      const btn = document.getElementById('upvoteBtn');
+      hasUpvoted = !hasUpvoted;
+      upvotes = hasUpvoted ? upvotes + 1 : upvotes - 1;
+      counterEl.textContent = upvotes;
+      btn.style.background = hasUpvoted ? '#06b6d4' : 'rgba(6, 182, 212, 0.15)';
+      btn.style.color = hasUpvoted ? '#021824' : '#22d3ee';
+      btn.style.transform = hasUpvoted ? 'scale(1.1)' : 'scale(1)';
+      fireReaction('👍');
+    }
+
+    // Quiz choice select
+    function selectQuiz(btn, isCorrect) {
+      const msg = document.getElementById('quizStatusMsg');
+      document.querySelectorAll('.quiz-btn').forEach(b => {
+        b.style.opacity = '0.5';
+        b.style.border = '1px solid rgba(255,255,255,0.1)';
+      });
+      btn.style.opacity = '1';
+      btn.style.border = isCorrect ? '2px solid #10b981' : '2px solid #ef4444';
+      btn.style.background = isCorrect ? '#059669' : '#b91c1c';
+      
+      if (isCorrect) {
+        msg.innerHTML = '<span style="color:#34d399; font-weight:800;">✓ Correct! +100 Points added to your streak!</span>';
+        fireReaction('🎉');
+        fireReaction('🔥');
+      } else {
+        msg.innerHTML = '<span style="color:#f87171; font-weight:800;">✗ Nice try! WebSockets provides full-duplex live connections.</span>';
+      }
+    }
+
+    // Reaction particles
+    function fireReaction(emoji) {
+      reactionCount++;
+      document.getElementById('reactionCountBadge').textContent = reactionCount + ' sent';
+
+      const box = document.getElementById('particleBox');
+      const el = document.createElement('div');
+      el.className = 'floating-emoji';
+      el.textContent = emoji;
+      el.style.left = (Math.random() * 80 + 10) + '%';
+      el.style.bottom = '8%';
+      box.appendChild(el);
+
+      setTimeout(() => el.remove(), 2800);
+    }
+
+    // Fullscreen toggle
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+          console.error(err);
+        });
+        fsText.textContent = 'EXIT FULLSCREEN';
+      } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+        fsText.textContent = 'FULLSCREEN';
+      }
+    }
+    btnFullscreen.addEventListener('click', toggleFullscreen);
+
+    // Pause toggle
+    function togglePause() {
+      isPaused = !isPaused;
+      pausePath.setAttribute('d', isPaused ? 'M8 5v14l11-7z' : 'M6 19h4V5H6v14zm8-14v14h4V5h-4z');
+    }
+    btnPause.addEventListener('click', togglePause);
+
+    // Keybindings
+    window.addEventListener('keydown', (e) => {
+      if (e.code === 'Space') {
+        e.preventDefault();
+        togglePause();
+      } else if (e.key === 'ArrowRight') {
+        goToScene((currentIdx + 1) % SCENES.length);
+      } else if (e.key === 'ArrowLeft') {
+        goToScene((currentIdx - 1 + SCENES.length) % SCENES.length);
+      } else if (e.key.toLowerCase() === 'f') {
+        toggleFullscreen();
+      }
+    });
+
+    document.addEventListener('fullscreenchange', () => {
+      fsText.textContent = document.fullscreenElement ? 'EXIT FULLSCREEN' : 'FULLSCREEN';
+    });
+
+    // Init
+    updateSceneUI();
+  </script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+{
+  "name": "askly-kiosk",
+  "version": "1.0.0",
+  "description": "Askly Animated Fullscreen Kiosk Presentation",
+  "scripts": {
+    "start": "npx serve ."
+  }
+}
